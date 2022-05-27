@@ -1,0 +1,76 @@
+<div class="content">
+  <nav class="navbar navbar-light bg-black">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="../../../assets/img/APLogo.png" alt="" width="120" class="d-inline-block align-text-top">
+        <code> #YoProgramo </code>
+      </a>
+      <ul class="nav justify-content-end">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/FleitaDana" target="blank"><i class="fab fa-github"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.linkedin.com/in/dana-fleita-9aaa4b23a/" target="blank"><i
+              class="fa-brands fa-linkedin"></i></a>
+        </li>
+        <li *ngIf="!logeado()" class="nav-item">
+          <a data-bs-toggle="modal" data-bs-target="#myModal" class="nav-link active btn tooltips" data-placement="top"
+            data-toggle="tooltip"> <i class="fa-solid fa-user-lock"></i>
+          </a>
+        </li>
+        <li *ngIf="logeado()" class="nav-item">
+          <a (click)="authentication.deslogeado()" class="nav-link active btn tooltips" data-placement="top"
+            data-toggle="tooltip"> <i class="fa-solid fa-user-check"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Login</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form" class="m-5" (ngSubmit)="onEnviar($event)">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email</label>
+            <input type="email" formControlName="email" [ngClass]="{'is-invalid' : Email?.errors && Email?.touched,
+                    'is-valid': !Email?.errors && Email?.touched}" class="form-control" id="exampleInputEmail1"
+              aria-describedby="emailHelp" placeholder="email">
+            <div *ngIf="Email?.errors && Email?.touched">
+              <p *ngIf="Email?.hasError('required')" class="text-danger">
+                El email es requerido
+              </p>
+              <p *ngIf="Email?.hasError('email')" class="text-danger">
+                El formato del email debe ser válido
+              </p>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+            <input type="password" formControlName="password" [ngClass]="{'is-invalid' : Password?.errors && Password?.touched,
+                    'is-valid': !Password?.errors && Password?.touched}" class="form-control"
+              id="exampleInputPassword1" placeholder="contraseña">
+            <div *ngIf="Password?.errors && Password?.touched">
+              <p *ngIf="Password?.hasError('required')" class="text-danger">
+                El password es requerido
+              </p>
+              <p *ngIf="Password?.errors?.['minlength']" class="text-danger">
+                El formato del password debe ser mayor a 8 caracteres
+              </p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Enviar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

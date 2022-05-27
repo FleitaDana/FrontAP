@@ -1,0 +1,183 @@
+<div class="content">
+  <h4 class="text-start"> Educación y cursos realizados </h4>
+  <div *ngIf="logeado()" class="text-center">
+    <button type="button" class="btn btn-success" (click)="onOpenModal('add')">
+      <a class="nav-link" style="color: #fff">
+        <h6>Agregar educación</h6><span class="sr-only">(current)</span>
+      </a>
+    </button>
+  </div>
+  <div id="main-container">
+    <div class="aling-items" *ngFor="let education of educations">
+      <div class="container">
+        <div class="position-relative">
+          <div class="row">
+            <div class="col">
+              <div *ngIf="logeado()" class="position-absolute top-0 end-0">
+                <a (click)="onOpenModal('edit',education)" class="btn btn-primary tooltips" data-placement="top"
+                  data-toogle="tooltips" data-original-title="Edit">
+                  <i class="bi bi-pencil-square"></i>
+                </a>
+                <a (click)="onOpenModal('delete', education)" class="btn btn-danger tooltips" data-placement="top"
+                  data-toogle="tooltips" data-original-title="Delete">
+                  <i class="bi bi-x-square"></i>
+                </a>
+              </div>
+              <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <img src="{{education.photoEducation}}" alt="" width="150">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body text-center">
+                      <h5 class="card-title">{{education.titleEducation}}</h5>
+                      <p class="card-text">{{education.startDateEducation}}</p>
+                      <p class="card-text">{{education.finishDateEducation}}</p>
+                      <h6 class="card-text">{{education.descriptionEducation}}</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="educations?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+    <div class="alert alert-info" role="alert">
+      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      Loading...
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade" id="addEducationModal" tabindex="-1" role="dialog" aria-labelledby="addEducationModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addEducationModalLabel">Agregar educación</h5>
+      </div>
+      <div class="modal-body">
+        <form #addForm="ngForm" (ngSubmit)="onAddEducation(addForm)">
+          <div class="form-group">
+            <label for="titleEducation">Establecimiento</label>
+            <input type="text" ngModel name="titleEducation" class="form-control" id="titleEducation"
+              placeholder="Establecimiento" required />
+          </div>
+          <div class="form-group">
+            <label for="startDateEducation">Fecha de inicio</label>
+            <input type="date" ngModel name="startDateEducation" class="form-control" id="startDateEducation"
+              placeholder="Fecha de inicio" required />
+          </div>
+          <div class="form-group">
+            <label for="finishDateEducation">Fecha de finalización</label>
+            <input type="date" ngModel name="finishDateEducation" class="form-control" id="finishDateEducation"
+              placeholder="Fecha de inicio" required />
+          </div>
+          <div class="form-group">
+            <label for="descriptionEducation">Descripción</label>
+            <input type="text" ngModel name="descriptionEducation" class="form-control" id="descriptionEducation"
+              placeholder="Descripción" required />
+          </div>
+          <div class="form-group">
+            <label for="photoEducation">Logo</label>
+            <input type="text" ngModel name="photoEducation" class="form-control" id="photoEducation" placeholder="URL"
+              required />
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="add-education-form" class="btn btn-secondary" data-dismiss="modal">
+              Cerrar
+            </button>
+            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">
+              Agregar educación
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="editEducationModal" tabindex="-1" role="dialog" aria-labelledby="educationEditModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateEducationModalLabel">
+          Editar Educación {{ editEducation?.titleEducation }}
+        </h5>
+      </div>
+      <div class="modal-body">
+        <form #editForm="ngForm">
+          <div class="form-group">
+            <label for="titleEducation">Establecimiento</label>
+            <input type="text" ngModel="{{ editEducation?.titleEducation }}" name="titleEducation" class="form-control"
+              id="titleEducation" aria-describedby="emailHelp" placeholder="Establecimiento" />
+          </div>
+          <input type="hidden" ngModel="{{ editEducation?.idEducation }}" name="idEducation" class="form-control"
+            id="idEducation" placeholder="" />
+          <div class="form-group">
+            <label for="descriptionEducation">Descripción</label>
+            <input type="text" ngModel="{{ editEducation?.descriptionEducation }}" name="descriptionEducation"
+              class="form-control" id="descriptionEducation" placeholder="descripción" />
+          </div>
+          <div class="form-group">
+            <label for="startDateEducation">Fecha de inicio</label>
+            <input type="text" ngModel="{{ editEducation?.startDateEducation }}" name="startDateEducation"
+              class="form-control" id="startDateEducation" placeholder="Fecha de inicio" />
+          </div>
+          <div class="form-group">
+            <label for="finishDateEducation">Fecha de finalización</label>
+            <input type="text" ngModel="{{ editEducation?.finishDateEducation}}" name="finishDateEducation"
+              class="form-control" id="finishDateEducation" placeholder="Fecha de inicio" />
+          </div>
+          <div class="form-group">
+            <label for="photoEducation">Imagen</label>
+            <input type="text" ngModel="{{ editEducation?.photoEducation}}" name="photoEducation" class="form-control"
+              id="photoEducation" placeholder="URL" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">
+              Cerrar
+            </button>
+            <button (click)="onUpdateEducation(editForm.value)" data-dismiss="modal" class="btn btn-primary">
+              Guardar cambios
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div data-bs-toggle="modal" data-bs-target="#deleteModelLabel" class="modal fade" id="deleteEducationModal"
+  tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModelLabel">Borrar educación</h5>
+      </div>
+      <div class="modal-body">
+        <p>
+          Desea eliminar
+          {{ deleteEducation?.titleEducation }}
+          ({{deleteEducation?.descriptionEducation}})?</p>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            No
+          </button>
+          <button (click)="onDeleteEducation(deleteEducation!.idEducation)" class="btn btn-danger" data-dismiss="modal">
+            Si
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
